@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NFCTest</string>
+    <string name="message_nfc_status">NFC soportado por el dispositivo: %s\nNFC habilitado: %s</string>
+</resources>
