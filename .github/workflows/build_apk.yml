@@ -51,33 +51,28 @@ jobs:
     steps:
       - uses: rymndhng/release-on-push-action@master
         with:
-          bump_version_scheme: minor
+          bump_version_scheme: patch
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
-    needs: release-on-push
     runs-on: ubuntu-latest
     steps:
-      - name: Build Changelog
-        uses: mikepenz/release-changelog-builder-action@v3
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: "Build Changelog"
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@main
         with:
-          configurationJson: |
-            {
-              "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
-              "categories": [
-                {
-                    "title": "## 💬 Other",
-                    "labels": ["other"]
-                },
-                {
-                    "title": "## 📦 Dependencies",
-                    "labels": ["dependencies"]
-                }
-              ]
-            }
+          configuration: "configs/configuration_repo.json"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Save changelog
-        uses: softprops/action-gh-release@v1
+
+      - name: Create Release
+        uses: actions/create-release@v1
         with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
           body: ${{steps.github_release.outputs.changelog}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
