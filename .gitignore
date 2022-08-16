@@ -79,10 +79,6 @@ captures/
 *~
 *.swp
 
-# Keystore files
-*.jks
-*.keystore
-
 # Google Services (e.g. APIs or Firebase)
 # google-services.json
 
@@ -164,3 +160,4 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,androidstudio
+/app/release/output-metadata.json
