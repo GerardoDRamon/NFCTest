@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "415168095586",
+    "project_id": "nfctest-13af9",
+    "storage_bucket": "nfctest-13af9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415168095586:android:7fbafb0cf2ae6c570ef83b",
+        "android_client_info": {
+          "package_name": "com.example.nfctest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415168095586-foigdgde2166m1s7tf0k1v73lqsdg6o3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3vHNCsnF_0fOr0VQSmecLExIXOZdAy7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415168095586-foigdgde2166m1s7tf0k1v73lqsdg6o3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
