@@ -40,8 +40,9 @@ jobs:
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.3.4
         with:
-          appId: '1:994326970928:android:2ki953237460aib8a4341c'
-          token: '1//03OuOvyPJmIZ2CgYIARAAGAMSNwF-L9IresD0hjK9dg8BFAJwzVVna9uj76A4rWJW5jK9dg878eP4rWJW5jKjOg6VH7YcGBFAJwz'
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFile: ${{secrets.FIREBASE_CREDENTIALS}}
+          releaseNotesFile: README.md
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
 
@@ -54,28 +55,3 @@ jobs:
       - uses: rymndhng/release-on-push-action@master
         with:
           bump_version_scheme: patch
-
-  release:
-    needs: release-on-push
-    if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: "Build Changelog"
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@main
-        with:
-          configuration: "configs/configuration_repo.json"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body: ${{steps.github_release.outputs.changelog}}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
