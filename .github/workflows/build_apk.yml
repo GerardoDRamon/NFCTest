@@ -37,14 +37,14 @@ jobs:
           cache: gradle
       - name: Build debug APK
         run: bash ./gradlew assembleDebug --stacktrace
-      - name: Firebase App Distribution Action
-        uses: hasretsariyer/firebase-app-distribution-github-action@v1.0
+      - name: Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.4
         with:
-          app_id: ${{secrets.FIREBASE_APP_ID}}
-          firebase_token: ${{secrets.FIREBASE_TOKEN}}
-          release_notes: README.md
-          tester_groups: testers
-          app_file: app/build/outputs/apk/debug/app-debug.apk
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFile: app/app-distribution.json
+          releaseNotes: README.md
+          groups: testers
+          file: app/build/outputs/apk/debug/app-debug.apk
 
   release-on-push:
     needs: apk
