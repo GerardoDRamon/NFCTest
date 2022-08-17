@@ -37,12 +37,14 @@ jobs:
           cache: gradle
       - name: Build debug APK
         run: bash ./gradlew assembleDebug --stacktrace
-      - name: Upload APK
-        uses: actions/upload-artifact@v1
+      - name: Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.4
         with:
-          name: app
-          path: app/build/outputs/apk/debug/app-debug.apk
-
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: testers
+          releaseNotes: README.md
+          file: app/build/outputs/apk/debug/app-debug.apk
   release-on-push:
     needs: apk
     runs-on: ubuntu-latest
@@ -52,28 +54,3 @@ jobs:
       - uses: rymndhng/release-on-push-action@master
         with:
           bump_version_scheme: patch
-
-  release:
-    needs: release-on-push
-    if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: "Build Changelog"
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@main
-        with:
-          configuration: "configs/configuration_repo.json"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body: ${{steps.github_release.outputs.changelog}}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
