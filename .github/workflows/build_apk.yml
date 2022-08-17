@@ -44,7 +44,7 @@ jobs:
           encodedString: ${{ secrets.CREDENTIAL_FILE }}
           fileName: 'credential_file.json'
       - name: Move credential file to repository location
-        run: mv ${{ steps.fetch_credential_file.outputs.filePath }} /home/runner/work/Firebase-Distribution-Github-Action/Firebase-Distribution-Github-Action/
+        run: mv ${{ steps.fetch_credential_file.outputs.filePath }} /usr/bin/git init /home/runner/work/NFCTest/NFCTest/
       - name: Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.3.4
         with:
