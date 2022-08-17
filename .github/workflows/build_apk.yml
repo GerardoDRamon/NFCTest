@@ -37,12 +37,6 @@ jobs:
           cache: gradle
       - name: Build debug APK
         run: bash ./gradlew assembleDebug --stacktrace
-      - name: Fetch credential file from secrets
-        id: fetch_credential_file
-        uses: timheuer/base64-to-file@v1
-        with:
-          encodedString: ${{ secrets.CREDENTIAL_FILE }}
-          fileName: 'credential_file.json'
       - name: Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.3.4
         with:
