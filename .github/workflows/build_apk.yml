@@ -25,6 +25,8 @@ jobs:
     name: Generate APK
     needs: test
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout
@@ -35,6 +37,26 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           cache: gradle
+      - name: Build Changelog
+        uses: mikepenz/release-changelog-builder-action@v3
+        with:
+          configurationJson: |
+            {
+              "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+              "categories": [
+                {
+                    "title": "## 💬 Other",
+                    "labels": ["other"]
+                },
+                {
+                    "title": "## 📦 Dependencies",
+                    "labels": ["dependencies"]
+                }
+              ]
+            }
+      - uses: rymndhng/release-on-push-action@master
+        with:
+          bump_version_scheme: patch
       - name: Build debug APK
         run: bash ./gradlew assembleDebug --stacktrace
       - name: Firebase App Distribution
@@ -43,14 +65,6 @@ jobs:
           appId: ${{secrets.FIREBASE_APP_ID}}
           token: ${{secrets.FIREBASE_TOKEN}}
           groups: testers
-          releaseNotes: README.md
+          releaseNotesFile: README.md
           file: app/build/outputs/apk/debug/app-debug.apk
-  release-on-push:
-    needs: apk
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - uses: rymndhng/release-on-push-action@master
-        with:
-          bump_version_scheme: patch
+
