@@ -43,8 +43,9 @@ jobs:
           appId: ${{secrets.FIREBASE_APP_ID}}
           token: ${{secrets.FIREBASE_TOKEN}}
           groups: testers
-          releaseNotes: README.md
+          releaseNotesFile: README.md
           file: app/build/outputs/apk/debug/app-debug.apk
+
   release-on-push:
     needs: apk
     runs-on: ubuntu-latest
