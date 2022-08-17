@@ -50,7 +50,7 @@ jobs:
           groups: testers
           releaseNotes: README.md
           file: app/build/outputs/apk/debug/app-debug.apk
-          serviceCredentialsFile: /home/runner/work/_temp/credential_file.json
+          serviceCredentialsFile: app/nfctest-359717.json
 
   release-on-push:
     needs: apk
