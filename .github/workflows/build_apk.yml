@@ -37,14 +37,14 @@ jobs:
           cache: gradle
       - name: Build debug APK
         run: bash ./gradlew assembleDebug --stacktrace
-      - name: upload artifact to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.4
+      - name: Upload artifact to Firebase App Distribution
+        uses: hasretsariyer/firebase-app-distribution-github-action@v1
         with:
-          appId: ${{secrets.FIREBASE_APP_ID}}
-          serviceCredentialsFile: ${{secrets.FIREBASE_CREDENTIALS}}
-          releaseNotesFile: README.md
-          groups: testers
-          file: app/build/outputs/apk/debug/app-debug.apk
+          app_id: ${{secrets.FIREBASE_APP_ID}}
+          firebase_token: ${{secrets.FIREBASE_TOKEN}}
+          release_notes: README.md
+          tester_groups: testers
+          app_file: app/build/outputs/apk/debug/app-debug.apk
 
   release-on-push:
     needs: apk
