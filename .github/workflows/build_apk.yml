@@ -37,10 +37,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           cache: gradle
-      - name: Set tag version
-        uses: rymndhng/release-on-push-action@master
-        with:
-          bump_version_scheme: patch
       - name: Build debug APK
         run: bash ./gradlew assembleDebug --stacktrace
       - name: Firebase App Distribution
@@ -49,5 +45,28 @@ jobs:
           appId: ${{secrets.FIREBASE_APP_ID}}
           token: ${{secrets.FIREBASE_TOKEN}}
           groups: testers
+          releaseNotesFile: config/release_notes_app_distribution.txt
           file: app/build/outputs/apk/debug/app-debug.apk
 
+  release-on-push:
+    needs: apk
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Set tag version
+        uses: rymndhng/release-on-push-action@master
+        with:
+          bump_version_scheme: patch
+
+  build:
+    needs: release-on-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Changelog CI
+        uses: saadmk11/changelog-ci@v1.0.0
+        with:
+          config_file: changelog-ci-config.json
