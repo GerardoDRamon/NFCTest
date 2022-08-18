@@ -1,0 +1,8 @@
+Cambios
+
+- Cambio de generador de notas de version.
+- Archivo de muestra de notas para distribución de app.
+
+Correcciones
+
+N/A
