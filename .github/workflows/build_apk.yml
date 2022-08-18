@@ -48,7 +48,7 @@ jobs:
           releaseNotesFile: config/release_notes_app_distribution.txt
           file: app/build/outputs/apk/debug/app-debug.apk
 
-  release-on-push:
+  build-tag:
     needs: apk
     runs-on: ubuntu-latest
     env:
@@ -60,7 +60,7 @@ jobs:
           bump_version_scheme: patch
 
   build:
-    needs: release-on-push
+    needs: build-tag
     runs-on: ubuntu-latest
 
     steps:
