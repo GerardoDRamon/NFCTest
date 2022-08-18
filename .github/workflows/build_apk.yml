@@ -46,6 +46,18 @@ jobs:
               "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
               "categories": [
                 {
+                    "title": "## 🚀 Features",
+                    "labels": ["feature"]
+                },
+                {
+                    "title": "## 🐛 Fixes",
+                    "labels": ["fix"]
+                },
+                {
+                    "title": "## 🧪 Tests",
+                    "labels": ["test"]
+                },
+                {
                     "title": "## 💬 Other",
                     "labels": ["other"]
                 },
@@ -55,6 +67,10 @@ jobs:
                 }
               ]
             }
+      - name: Echo Changelog
+        env:
+          CHANGELOG: ${{ steps.build_changelog.outputs.changelog }}
+        run: echo "CHANGELOG"
       - name: Set tag version
         uses: rymndhng/release-on-push-action@master
         with:
@@ -68,6 +84,6 @@ jobs:
           appId: ${{secrets.FIREBASE_APP_ID}}
           token: ${{secrets.FIREBASE_TOKEN}}
           groups: testers
-          releaseNotes: ${{steps.build_changelog.outputs.changelog}}
+          releaseNotesFile: ${{steps.build_changelog.outputs.changelog}}
           file: app/build/outputs/apk/debug/app-debug.apk
 
