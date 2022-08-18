@@ -37,45 +37,10 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           cache: gradle
-      - name: Build Changelog
-        id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@v3
-        with:
-          configurationJson: |
-            {
-              "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
-              "categories": [
-                {
-                    "title": "## 🚀 Features",
-                    "labels": ["feature"]
-                },
-                {
-                    "title": "## 🐛 Fixes",
-                    "labels": ["fix"]
-                },
-                {
-                    "title": "## 🧪 Tests",
-                    "labels": ["test"]
-                },
-                {
-                    "title": "## 💬 Other",
-                    "labels": ["other"]
-                },
-                {
-                    "title": "## 📦 Dependencies",
-                    "labels": ["dependencies"]
-                }
-              ]
-            }
-      - name: Echo Changelog
-        env:
-          CHANGELOG: ${{ steps.build_changelog.outputs.changelog }}
-        run: echo "CHANGELOG"
       - name: Set tag version
         uses: rymndhng/release-on-push-action@master
         with:
           bump_version_scheme: patch
-          release_body: ${{steps.build_changelog.outputs.changelog}}
       - name: Build debug APK
         run: bash ./gradlew assembleDebug --stacktrace
       - name: Firebase App Distribution
@@ -84,6 +49,5 @@ jobs:
           appId: ${{secrets.FIREBASE_APP_ID}}
           token: ${{secrets.FIREBASE_TOKEN}}
           groups: testers
-          releaseNotesFile: ${{steps.build_changelog.outputs.changelog}}
           file: app/build/outputs/apk/debug/app-debug.apk
 
